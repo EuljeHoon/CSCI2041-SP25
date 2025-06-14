@@ -1,0 +1,69 @@
+Announcements
+    Project2 up this afternoon - parser token, construct list thing
+Lisp Scanner (scanner.ml)
+    nextComment
+    nextSymbolToken
+    nextNumberToken
+    Syntax diagrams
+
+In module scanner
+    let rec nextToken() =
+        match !ch
+        with ';' ->
+                nextComment();
+                nextToken() |
+             '_' | '0' | '1' ... | '9' ->
+                nextNumberToekn() |
+             .
+             .
+             .
+             _ ->
+                nextSymbolToken();;
+comment token
+    let rec nextComment() =
+        match !ch
+        with '\000' ->
+                () |
+             '\n' ->
+                nextChar() |
+             _ ->
+                nextChar();
+                nextComment();;
+symbol token
+    let nextSymbolToken() =
+        let rec nextSymboling chars =
+            match !ch
+            with '\000' | '\n' | ' ' | '( ' | ')' ->
+                    SymbolToken chats |
+                 _ ->
+                    let otherChars = Char.escaped !ch
+                    in nextChar();
+                    nextSymboling (chars ^ otherChars)
+        in nextSymboling " ";;
+number token
+    let nextNumberToken() =
+        let rec nextNumbering chars =
+            match !ch
+            with '\000' | '\n' | ' ' | '(' | ')' ->
+                    (try
+                        NumberToken(int_of_string chars)
+                        with 
+                            Failure_ ->
+                                SymbolToken chars) |
+                    _ ->
+                        let otherChars = Char.escaped !ch
+                        in nextChar();
+                            nextNumbering(chars ^ otherChars)
+        in nextNumbering " ";;
+
+let rec dum n =
+    if n > 0
+        then dee(n - 1)
+        else ()
+and dee n =
+    if n > 0
+    then dum(n - 1)
+    else();;
+
+
+

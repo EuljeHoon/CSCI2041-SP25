@@ -1,0 +1,70 @@
+What I need for the Lab
+    Function that take no arguments
+    Tuples(Data Structure that is built in Ocaml)
+        Definitions-types
+        Examples
+        Fst, Snd
+    Converting imperative to applicative.
+Association list
+
+Unit Object ()
+    use this intead of parameter names.
+        let five () = 5;;
+        five () => 5
+    Special case of pattern matching
+
+Tuples
+    e0, e1 ..., en-1  n expressions separated by commas n >= 2
+    No 0, 1 Tuples
+    Ordered Finite sequence of objects, possibly of different types.
+    Immutable, Fixed Size (Different from python)
+    Example Tuples - types use *'s
+        (1, 2) has type int * int (meant to suggest cartesion product)
+        (5, "hello") has type int * string
+        (2, "xyz", 7.5) has type int * string * float
+        (2, [5, 7], ("a", 1)) has type int * int list * (string * int)
+
+fst(a, b) => a   fst: 'a * 'b -> 'a
+snd(a, b) => b   snd: 'a * 'b -> 'b
+
+Square roots by Newton's method a >= 0
+    double squirt(double a) {
+        double g = 1.0;
+        double h = a;
+        while(abs(g - h) >= epsilon) {
+            g = (g + h) / 2.0;
+            h = a / g;
+        }
+        return g;
+    }
+
+Translate to applicative Ocaml code
+Imperative statements are executed in order, Applicative arguments are not
+Tail calls means: 1. Change parameters. 
+                  2. Jump to the top of the function.
+
+Ocaml code
+    let squirt a =
+        let rec squirting g h =
+            if abs_float(g -. h) < epsilon
+                then g
+            else let g = (g +. h) /. 2,0
+                 in squirting g(a /. g)
+        in squirting 1.0 a ;;
+
+    let squirt a =
+        let rec squirting g h =
+            if abs_float(g -. h) < epsilon
+                then g
+            else let g = (g +. h) /. 2,0
+                 in let h' = a /. g'
+                    in squirting g' h'
+        in squirting 1.0 a ;;
+
+Rules
+    1. Loops turn into tail recursive helper functions.
+    2. Variables turn into parameters.
+    3. Helpers use if-then-else
+    4. if-then-else tells when to stop the helper.
+    5. Assignment turn into let's or changes to arguments
+    6. Initializations of variables turn into arguments

@@ -1,0 +1,453 @@
+Bst
+let BstIsIn key tree =
+    let rec isInning subTree =
+        match subTree
+        with BstEmpty -> false
+             BstNode(k, left, right) ->
+                if key < k
+                    then isInning left
+                else if key > k
+                    then isInning right
+                else true
+    in isInning tree;;
+
+Partial function
+let rec factorial n =
+    if n = 0
+        then 1
+    else 
+        n * factorial(n - 1)
+;;
+
+tail recursion
+let rec sum n add =
+    if n = 0
+        then add
+    else 
+        sum(n - 1)(add + n)
+;;
+
+let sum n =
+    let rec summing n acc =
+        if n = 0
+            then acc
+        else
+            then summing (n - 1)(acc + n)
+    in summing n 0
+;;
+
+let rec summing n acc =
+    if n = 0
+        then acc
+    else summing (n - 1)(acc + n)
+;;
+let sum n =
+    summing n 0
+;;
+
+let rec sum ls =
+    match ls
+    with [] -> 0 |
+         head :: tail -> head + sum tail
+
+let alGet pair key default =
+    let rec getting pair =
+        match pair
+        with [] -> default |
+             (otherKey, otherValue) :: otherPairs ->
+                if key = otherKey
+                    then otherValue
+                else
+                    getting otherPairs
+    in getting pair;;          
+
+let factorials =
+    1 this
+    1 state
+    (fun this state -> this * state, next this(state + 1));;
+
+let isIn element stream count =
+    let rec inning stream count =
+        if count = 0
+            then false
+        else
+            inning(rest stream)(count - 1)
+    in inning steam count;;
+
+let rec memyFib n =
+    open Array;;
+    let table = Array.make 50 (-1)
+    if table.(n) >= 0
+        then table.(n)
+    else
+        (table.(n) <-
+            match n
+            with 0 ->  0 |
+                 1 -> 1 |
+                 _ -> memyFib(n - 1) + memyFib(n - 2));
+                 table(n);;
+
+Recursion
+let rec sum n =
+    if n = 0
+        then 0
+    else
+        n + sum(n - 1)
+;;
+
+Tail recursive function
+let sum n =
+    let rec summming n current =
+        if n = 0
+            then acc
+        else 
+            summing(n - 1)(acc + n)
+    in summing n 0
+;;
+
+let rec summing n acc =
+    if n = 0
+        then 0
+    else
+        summing(n - 1)(acc + n);;
+let sum n =
+    summing n 0
+;;
+
+let rec sum ls =
+    match ls
+    with [] -> 0 |
+         head :: tail -> head + sum tail;;
+
+let alGet pairs key default =
+    let rec getting pairs =
+        match pairs
+        with [] -> default |
+             (newKey, newValue) :: newPairs ->
+                if newKey = key
+                    then newValue
+                else 
+                    getting newPairs
+    in getting pairs;;
+
+let alPut pairs key value =
+    (key, value) :: pairs;;
+
+let makeStream this state next =
+    ((this, state),next);;
+let first this state next =
+    ((first, _), _);;
+let rest ((this, state), next) = (next this state, next)
+let factorials =
+    makeStream
+        1 this
+        1 state
+        (fun this state -> this * state, next this(state + 1))
+;;
+------------------------------------------------------------------
+Partial application (curried function)
+    let sum x y = x + y
+    let add9 = add 9
+    let add9 1;;
+
+Recursion
+    let rec sum n =
+        if n == 0
+            then 0
+        else
+            n + sum(n - 1);;
+    
+    let rec factorial x =
+        if x = 0
+            then 0
+        else 
+            x * factorial(x - 1);;
+
+Tail recirsion
+    let sum n =
+        let rec summing n current =
+            if n = 0
+                then current
+            else
+                summing(n - 1)(current + n)
+        in summing n 0
+    ;;
+    
+    let rec sum n current =
+        if n = 0
+            then 0
+        else sum(n - 1)(current + n);;
+
+Internal helper function
+    let sum n =
+        let rec summing n =
+            if n = 0
+                then 0
+            else n + summing(n - 1)
+        in summing n;;
+
+External helper function
+    let rec summing n current =
+        if n = 0
+            then current
+        else
+            summing(n - 1)(n + summing)
+    ;;
+    let sum n = 
+        summing n 0
+    ;;
+
+Pattern matching
+    let rec sum ls =
+        match ls
+        with [] -> 0 |
+             head :: tail ->
+                head + sum tail
+    ;;
+
+Define new type
+    type number = int;;
+
+Recursive type
+    type intList =
+        Empty |
+        Node of int * intList;;
+
+Types with parameters
+    type 'a list =
+        Empty |
+        Node of 'a * 'a list;;
+    type 'key bst =
+        BstEmpty |
+        Node of 'key * 'key bst * 'key bst;;
+
+Type with mutilple parameter
+    type ('key, 'value)tuple = ('key * 'value)tuple;;
+
+type constructor
+    type = {
+        name : string;
+        age : int;
+    };;
+
+Anonymous function
+    fun x y -> x + y;;
+
+Association list
+    let alGet pairs key default =
+        let getting pairs =
+            match pairs
+            with [] -> default |
+                 (newKey, newValue)newPairs ->
+                    if newKey = key
+                        then newValue
+                    else
+                        getting newPairs
+        in getting pairs;;
+    
+    let alPut pairs key value =
+        (key, value) :: pairs;;
+
+Logical propositions
+    type proposition =
+        match proposition
+        with False |
+             True |
+             Var of string | 
+             Not a proposition | (* ㄱ x*)
+             And of proposition * proposition | (* x ^ y*)
+             Or of proposition * proposition | (*x v y*)
+             Imply of proposition * proposition | (*x -> y*)
+             Equir of proposition * proposition ;; (*x <-> y*);;
+
+Continuation
+    let forloop etc first last =
+        let rec looping current =
+            if current <= last 
+                then (etc current;
+                      looping current + 1)
+            else()
+        in looping first;;
+    
+    let count etc fisrt last =
+        let rec counting current =
+            if current <= last
+                then (etc current;
+                      counting current + 1)
+            else ()
+        in counting first;;
+
+MakeStream
+    let makeStream this state rest =
+        ((this, state), rest);;
+first
+    let first this state rest =
+        ((first, _), _);;
+rest
+    let rest ((this, state), rest) =
+        (next this state, rest);;
+Factorials with stream
+    let factorials =
+        1 this
+        1 state
+        (fun this state -> this * state, next this(state + 1));;
+
+    let isIn element stream count =
+        let rec inning stream count =
+            if count = 0
+                then false
+            else
+                in 
+                if (first stream) = element
+                    then true;
+                else
+                    inning(rest stream)(count - 1)
+        in inning stream count;;
+    
+    let satisfies predicate stream =
+        makeStream
+            (predicate first stream) this
+            (rest stream) state
+            (fun this state -> (predicate(first state), (rest state)));;
+__________________________________________________________________________
+practice from GPT
+
+Partial Application
+let multiply x y = x * y;;
+let double = multiply 2;;
+let triple = multiply 3;;
+
+Recursion
+let rec sum_list lst =
+    match lst
+    with [] -> 0 |
+         head :: tail -> head + sum_list tail;;
+
+Tail Recursion
+let power base exp =
+    let rec helper base exp acc =
+        if exp = 0
+            then acc
+        else
+            helper base (exp - 1)(acc * base)
+    in helper base exp 1;;
+
+Internal helper function
+let length lst =
+    let rec helper lst acc =
+        match lst
+        with [] -> acc |
+             head :: tail -> helper tail (acc + 1)
+    in helper lst 0;;
+ 
+Pattern Matching
+let rec last_element lst =
+    match lst
+    with [] -> 0 |
+         head :: tail -> last_element tail;;
+
+Define new type
+Recursive Type
+type intList =
+    | Empty
+    | Node of int * intList
+;;
+let rec sum_intList lst =
+    match lst
+    with Empty -> 0 |
+         Node(hd, tl) -> hd + sum_intList tl;;
+
+Association list
+let rec find_value key lst default =
+    match lst 
+    with [] -> default |
+         (newKey * newValue) :: tail ->
+            if key = newKey
+                then newValue
+            else
+                find_value key tail default;;
+
+(* 테스트 *)
+let al = [("a", 1); ("b", 2); ("c", 3)];;
+find_value "b" al 0;; (* 예상 출력: 2 *)
+find_value "z" al (-1);; (* 예상 출력: -1 *)
+
+Continuation
+let for_loop etc first last =
+    let rec looping i =
+        if i < last
+            then (etc i;
+                  looping(i + 1))
+    in looping first;;
+
+Stream
+let makeStream this state rest = ((this, state), rest);;
+let first this state rest = ((first, _), _);;
+let rest ((this, state), rest) = (next this state, rest);;
+
+let factorials =
+   let rec next this state =
+        (this * state, next(this * state, state + 1))
+    in next 1 1;;
+
+let satisfies predicate stream =
+    (predicate first stream) this
+    (rest stream) state
+    (fun this state -> (predicate(first, state), (rest state)));;
+
+Proposition
+type proposition =
+    False |
+    True |
+    Var of string | 
+    Not a proposition | (* ㄱ x*)
+    And of proposition * proposition | (* x ^ y*)
+    Or of proposition * proposition | (*x v y*)
+    Imply of proposition * proposition | (*x -> y*)
+    Equir of proposition * proposition ;; (*x <-> y*)
+
+;;
+
+let evaluate proposition pairs =
+    let rec evaluating proposition =
+        match propsition
+        with False -> false |
+             True -> true |
+             Var name -> alGet pairs name |
+             Not right -> not(evaluating right) |
+             And(left, right) -> evaluating left && evaluating right |
+             Or(left, right) -> evaluating left || evaluating right |
+             Imply(left, right) -> not(evaluating left) || evaluating right |
+             Equir(left, right) -> evaluating left = evaluating right
+    in evaluating proposition;;
+
+exception E;;
+let alGet pairs key =
+    let getting pairs =
+        match pairs
+        with [] -> raise E |
+             (newKey, newValue) :: newPairs ->
+                if newKey = key
+                    then newValue
+                else
+                    getting newPairs
+    in getting pairs;;
+
+let memyFib =
+    let array = Array.make 50 (-1);;
+    let rec fibbing n =
+        if array.(n) >= 0
+            then array.(n)
+        else
+            array.(n) <- 
+                (match n
+                 with 0 -> 0 |
+                      1 -> 1 |
+                      _ -> (fibbing(n - 2) + fibbing(n - 1));
+            array.(n))
+    in fibbing n;;
+
+
+
+_________________________________________________________________________________________
+

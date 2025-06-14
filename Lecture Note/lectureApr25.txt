@@ -1,0 +1,54 @@
+What is a Tautology?
+    Expression, using ^ V ~ -> <->
+    variebles that are either true or false.
+    Is the expression true for all values of its variables?
+    Early -n variables, took O(2^n).
+
+Boolean Algebra
+    ~(a ^ b) => ~a V ~b
+    transformation
+    How many rules? CSCI 2011 -> >= 34 rules
+    Using these was a matter of luck and search.
+    Representation - rules are deterministic.
+    e0 => e1 => e2 ... => en-1 => true
+
+Boyer-Moore theorem prover(1970's -1980's)
+(if pi alpha beta) = {alpha if pi, beta if ~pi} <- works like if-then-else in Ocaml, but not laziness
+
+Translation rules
+    1. ~alpha => (if alpha F T)
+    2. alpha ^ beta => (if  alpha beta F)
+    3. alpha V beta => (if alpha T beta)
+    4. alpha -> beta => (if alpha beta T)
+    5. alpha <-> beta => (if alpha beta(if beta F T))
+
+    a ^ (b V ~c) =>2 (if a(b V ~c) F)
+                 =>3 (if a(if b T ~c) F)
+                 =>1 (if a(if b T(if c F T)) F)
+    
+    6. later...
+    7. (if T alpha beta) => alpha
+    8. (if F alpha beta) => beta
+    9. (if pi T F) => pi
+    10. (if pi alpha alpha) => alpha
+
+    substitution
+        alpha { pi => T }
+            if alpha, replace all pi's ny T's.
+        alpha { pi => F }
+            In alpha, replace all pi's by F's.
+        (if pi alpha pi) { pi => T } =>
+        (if T alpha T) =>7 alpha
+    
+    11. (if pi alpha beta) => (if pi alpha {pi => T} beta{pi => F}) It would be nice if pi was always either alpha variable, ot T or F.
+                                                                    If pi is like that, we say that the 'if' is normalized. 
+                                                                    Rule 6 places if's into normal form
+
+    6. (if (if pi alpha1, beta1)alpha2 beta2) => (if pi (if alpha1 alpha2 beta2)(if beta1 alpha2 beta2)) We can apply rule6 repeatedly until pi is not an if.
+   
+                                                                                                         The if is normalized.
+    Translate rules
+    1 - 11 to ocaml code for a tautology checker. If we believe the rules are correct,
+    then code is correct also.
+
+    

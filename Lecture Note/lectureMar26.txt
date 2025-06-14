@@ -1,0 +1,74 @@
+Organizing large programs
+    OOP
+        How can we simulate OOP functionally?
+        What is OOP?
+        What is Stack?
+        Functional simulation of an OOP stack.
+
+Ocaml does not really do OOP like  I'll show you!
+Using Ocaml functions to simulate OOP!
+
+Stack
+    Finite ordered sequence of objects where all additions & deletions occur at one end: top.
+
+    exception StackError of string;;
+    type 'base stackOperation =
+        IsEmpty |
+        Peek |
+        Pop |
+        Push of 'base;;
+    
+    type 'base stackResult =
+        NoResult |
+        BoolResult of bool |
+        BaseResult of 'base;;
+    
+    'base  stackOperation -> 'base stackResult;;
+
+    let makeStack() =
+        let top = ref[]
+        in
+        let isEmpty() =
+            BoolResult(!top = [])
+        in
+        let peek() =
+            match !top
+            with [] ->
+                raise(StackError "can't PEEK") |
+                result :: _ -> 
+                    BaseResult result
+        in
+        let pop() =
+            match !top
+            with [] ->
+                raise(StackError "Can't pop") |
+                 _ :: rest ->
+                    top := rest;
+                    NoResult
+        in
+        let push element =
+            top := element :: !top;
+            NoResult
+        in
+        let dispatch operation =
+            match operation
+            with IsEmpty ->
+                    isEmpty() |
+                 Peek ->
+                    peek() |
+                 Pop ->
+                    pop() |
+                 Push element ->
+                    push element
+        in dispatch;;
+
+Ocaml's top level
+    # let s = makeStack();;
+    val s: '_a stackOperation ->
+           '_a stackResult                '_a will gets filled in later
+    # s IsEmpty;;
+    val_: 'a stackResult = BoolResult true
+    # s(Push 0);;
+    val_: int stackResult = NoResult
+    #s;;
+    _: int stackOperation -> int stackResult

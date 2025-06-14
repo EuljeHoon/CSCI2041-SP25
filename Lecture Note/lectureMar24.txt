@@ -1,0 +1,50 @@
+Announcement
+    Lab7 - lazy evaluation
+Lazy evaluation
+    Lazy lists
+    tails of the lists are lazy
+Organizing large program
+    OOP-simulate
+    Modules
+
+open Lazy;;
+type 'element lazyList =
+    LazyEmpty |
+    LazyNode of 'element * 'element lazyList Lazy.t;;
+                 head       tail
+
+exception LazyListError;;
+let lazyCons head tail =   (head = 'element, tail = lazy)
+    LazyNode(head, tail);;
+
+let lazyHead elements =     (elements = lazyList)
+    match elements
+    with LazyEmpty ->
+        raise LazyListError |
+        LazyNode(head, _) ->
+            head;;
+
+let lazyTail elements =      (elements = lazyList)
+    match elements
+    with LazyEmpty ->
+        raise LazyListError |
+        LazyNode(_, tail) ->
+            Force tail;;
+
+"a", "b", "c"
+let x =
+    LazyCons "a"
+        (lazy
+            (LazyCons "b"
+                (lazy
+                    (lazyCons "c"
+                        (lazy LazyEmpty)))));;
+
+Infinite list of Fibonaccis
+    let lazyFibs() =      () means this function takes no arguments.
+        let rec lazyFibbing left right =
+            lazyCons left
+                (lazy(lazyFibbing right(left + right)))
+        in lazyFibbing 0 1;;
+    If I did not say lazy, this function would not terminated.
+    Use lazy mechanism to simulate the infinite list.

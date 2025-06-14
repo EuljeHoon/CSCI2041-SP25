@@ -1,0 +1,46 @@
+Announcement
+    Lab9 - Printing Lisp expressions
+    Next week - project2
+Representations
+    thing - how it works
+    Read Lisp expresions
+
+type
+    thing =
+        Closure of thing * thing * environment |
+        Cons of thing * thing |
+        Nil |
+        Number of int |
+        Primitire of (thing -> environmnet -> thing) |
+        Symbol of string
+and
+    environment = (string * string)list;;
+    
+() nil / Nil
+(a b c) / Cons(Symbol "a",
+               Cons(Symbol "b,
+                    Cons(Symbol "c",
+                         Nil)))
+
+Interpreter
+    1. If end of input then stop.
+    2. Read an expression
+    3. Evaluate it
+    4. Print Result
+    5. go to 1
+
+(a(b c))
+(Cons(Symbol "a",
+      Cons(Cons(Symbol "b",
+           Cons(Symbol "c",
+                Nil), Nil))))
+
+Program - We don't consider it as a sequence of chars
+(x + y) * z
+Free format - blanks, newlines, tobs not significant
+    (x  + y)
+     x z
+A program is a sequence of tokens. Each token is a meaningful sequence of chars
+
+Tokens: open name x operator + name y close operator * name 2.
+        Procedure that turns chars into tokens - scanner, lexer, lexical Scanner

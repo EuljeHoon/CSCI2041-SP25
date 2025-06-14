@@ -1,0 +1,56 @@
+01/31/2025
+Write recursions that are efficient as iterations.
+    Factorial
+        Iterative imperatier
+        what does it do to the stack?
+        Recursive applicative
+        Tail-recursive version
+
+Factorial
+    0! = 1
+    n1 = n(n - 1)(n - 2)...2 * 1
+    
+    int fac(int n) {          this is not Ocaml, it could be c or c++
+        int f = 1;
+        while(n > 1) {
+            f = n * f;
+            n = n - 1;
+        }
+        return f;
+    }  O(1) stack base
+    Each time you call & procedure, a frame is pushed on a stack.
+    Each time you return, the frame is popped off the stack.
+
+    let rec fac n = 
+        if n > 1
+            then n * fac(n - 1)
+        else
+            then 1
+    ;; O(n) stack base
+    fac(3) = 6 which thing is going to happen in stack?
+
+    Where's computation being happening?
+    1. little bit during the call n - 1
+    2. Part during the return n * something
+
+    *Interesting parts of the computation happen during returns -on our up the stack.
+    let rec fating f n =
+        if n > 1
+            then fating (n + f)(n - 1)
+    ;;
+    let fac n =
+        fating 1 n
+    ;;
+    fac 3 See the stack too.
+
+    Where is computation being done?
+    1. During the calls
+    2. NONE during returns!
+    * We could re-use stack frames * Like I usually do.
+    Same as an iterative imperatire functions
+
+    How to find the tail for each function?
+    If all calls are tail calls, we say that the function is tail-recursive.
+    A tail recursive function executes in 1 stack frame.
+    As efficient as on iterative imperative function.
+    

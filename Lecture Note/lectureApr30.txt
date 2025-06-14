@@ -1,0 +1,63 @@
+Tautology Checker
+    Substitute
+    isEquivalent
+    Simplify
+    isTautology
+
+Given 2 propositions, how to tell if they're equivalent?
+    a ^ b vs b ^ algorithm
+    p1 p2 are equivalent if p1 <-> p2 is a tautology.
+
+    10 (if pi alpha alpha) => alpha  <- isEquivalent
+    11 (if pi alpha beta) => (if pi alpha {pi => T} beta {pi => F}) <- Substitute
+    Assume pi is a variable
+
+    let substitute phi v b =
+        let rec substituting phi =
+            match phi
+            with If(phi, alpha, beta) ->
+                makeIf
+                    (substituting pi)
+                    (substituting alpha)
+                    (substituting beta) |
+                 V_ ->
+                    if phi = v
+                        then b
+                    else phi |
+                 _ -> phi
+            in match v
+               with V_ ->
+                        substituting phi |
+                    _ ->
+                        phi;; 
+    
+    let rec isTautology phi =
+        let isEquivalent phi1 phi2 =
+            phi1 = phi2 || isTautology (makeIf phi1 phi2 (makeIf phi2 F T))
+            in
+            let rec simplify phi =
+                metch phi
+                with If(pi, alpha, beta) ->
+                        let alpha = simplify(substitute alpha pi T)
+                        in let beta = simplify(substitute beta pi F)
+                            in if isEquivalent alpha beta
+                                    then alpha   <- rule 10
+                                else makeIf pi alpha beta |
+                     _ ->
+                        phi
+                in simplify(normalize phi) = T;;
+MACRO
+    let f a b =
+        abs (a - b);;
+    let macro abs x =
+        if x < 0
+            then -x
+        else x;;
+
+    when OCaml sees f, it complies it like this
+    let f a b =
+        if(a - b) < 0
+            then -(a - b)
+        else a - b;;
+
+                                      

@@ -1,0 +1,75 @@
+Announcements
+    Spring break Friday
+    Midterm topics list ?
+Memoization
+    Example
+        Fibonacci numbers
+        Naive algorithm - slow
+    Memoized version
+        fast
+        2 versions
+
+Memoization
+    Lets a function compute its result while never computing smae thing twice.
+    Dynamic programming-
+    CSCI 4041
+
+    Fibinacci numbers
+        F0 = 0
+        F1 = 1
+        Fn = Fn-2 + Fn-1
+        0 1 1 2 3 5 8 13 ... etc
+        F46 = 1 836311903 this line will not be on exam.
+
+        let rec fib n =
+            match n
+            with 0 -> 0 |
+                 1 -> 1 |
+                 _ -> fib(n - 2) + fib(n - 1)
+        ;;
+        fib 4 => 3
+
+    let elapsed etc =
+        let start = Sys.time()
+        in etc();
+            Sys.time() -. start
+    ;;
+    Time needed to compete etc()
+    elapsed(fun() -> fib 46);;
+    
+    Why is this so slow?: Computing same thing repeatedly
+    
+    Change an array element
+    a.(j) <- e
+    a[j] = e
+    Memoized version of Fibonacci
+        open Array;;
+        let table = Array.make 50 (-1);;
+        let rec memyFib n =
+            if table.(n) >= 0
+                then table.(n)
+            else
+                (table.(n)) <-
+                    (match n
+                     with 0 -> 0 |
+                          1 -> 1 |
+                          _ -> memyFib(n - 2) + memyFib(n - 1);
+                table.(n))
+        ;;
+        Nobody but memyFib should see table.(private)
+
+        let memyFib =
+            let table = Array.make 50(-1)
+            in let rec fibbing n =
+                if table.(n) >= 0
+                    then table(n)
+                else (table(n) <-
+                    (match n
+                     with 0 -> 0 |
+                          1 -> 1 |
+                          _ -> fibbing(n-2) + fibbing(n - 1));
+                    table.(n))
+                in fibbing
+        ;;
+
+        in Lab, will use hash table instead of Array.

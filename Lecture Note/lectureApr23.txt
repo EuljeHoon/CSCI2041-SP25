@@ -1,0 +1,60 @@
+Lisp evaluator
+    evaluator
+    evaluate
+    evaluating
+    apply
+    example
+Announcement
+    1 lab left
+    Also Project 3
+    Project2 - parser
+    Lectures - evaluator
+    Lab9 - printer
+    Ocaml compiler
+    1 page of code
+
+All inside Evaluator
+    let evaluate thing =
+        evaluating thing (envMake());;
+    let rec evaluating thing env =
+        match thing
+        with Cons(func, args) ->
+                (match (evaluating func env)
+                 with Closure(pars, body, bodyEnv) ->
+                        apply pars args env body bodyEnv |
+                      Primitive howTo ->
+                        howTO args env |
+                      _ ->
+                        oops "Closure on prmitive expected") |
+             Symbol name ->
+                lookup env name |
+             _ ->
+                thing
+    and apply pars args argsEnv body bodyEnv =
+        let rec applying pars args bodyEnv =
+            match (pars, args)
+            with (Nil, Nil) ->
+                    evaluating body bodyEnv |
+                        (Nil, Cons(_,_)) ->
+                            oops "More arguments than parameters" |
+                        (Cons(_,_), Nil) ->
+                            oops "Fewer arguments than parameters" |
+                        (Cons(Symbol name, pars), Cons(arg, args)) ->
+                            applying pars args (envPut name(evaluating arg argsEnv) bodyEnv) |
+                        _ ->
+                            oops "Bad application"
+        in applying pars args bodyEnv;;
+
+evaluate (f 1 3)
+evaluating (f 1 3) []
+    evaluating f []
+apply (a b) (1 3) [] (+ a b) []
+    applying (a b) (1 3) []
+        evaluating 1 [] => 1
+        applying (b) (3) [a -> 1]
+            evaluate 3 [] => 3
+            applying () () [b -> 3; a -> 1]
+                evaluating (+ a b) [b -> 3; a -> 1]
+                    evaluate + []
+                    evaluate a [b -> 3; a -> 1] => 1
+                    evaluate b [b -> 3; a -> 1] => 3

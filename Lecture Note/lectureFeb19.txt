@@ -1,0 +1,69 @@
+Tautology checker
+    what's a Tautology?
+    Representing a proposition
+    Evaluating a proposition
+        al Put
+        al Get
+        evaluate
+
+Tautology
+    a ^ (ㄱa v b)
+
+    a  b |  a ^ (ㄱa v b)
+    ---------------------
+    F  F |    F
+    F  T |    F
+    T  F |    F
+    T  T |    T
+    Not a tautology
+    n variables need O(R^2)
+    Generate Bools
+
+Type proposition?
+    False |
+    True |
+    Var of string | 
+    Not a proposition | (* ㄱ x*)
+    And of proposition * proposition | (* x ^ y*)
+    Or of proposition * proposition | (*x v y*)
+    Imply of proposition * proposition | (*x -> y*)
+    Equir of proposition * proposition ;; (*x <-> y*)
+
+    a ^ (ㄱa v b) -> (And(Var "a", Or(Not(Var"a"), Var "b")))
+    a -> b = ㄱa v b
+    a <-> b = a = b
+
+    x = y
+    compates x, y for equality
+    x == y compares pointers
+
+    let evaluate proposition pairs =
+        let rec evaluating proposition =
+            match proposition
+            with False -> false |
+                 True -> true |
+                 Var name -> alGet pairs name |
+                 Not right -> not (evaluating right) |
+                 And(left, right) -> evaluating left && evaluating right |
+                 Or(left, right) -> evaluating left || evaluating right |
+                 Imply(left, right) -> not(evaluating left) || evaluating right |
+                 Equiv(left, right) -> evaluating left = evaluating right
+        in evaluating proposition
+    ;;
+
+    exception NoSuchKey;;
+    let alGet pairs key =
+        let rec alGetting pairs =
+            Match pairs
+            with [] -> raise NoSuchKey |
+                 (otherKey, otherValue) :: otherPairs -> 
+                    if key = otherKey
+                        then otherValue
+                    else alGetting otherPairs
+        in alGetting pairs
+    ;;
+    alGet: ('a * 'b)list -> 'a -> 'b
+    evaluate: proposition -> bool -> false
+
+let alPut pairs key value =
+    (key, value) :: pairs;;

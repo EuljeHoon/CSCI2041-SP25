@@ -1,0 +1,54 @@
+BST(Binary Search Trees)
+    Definition
+    Ocaml type
+    bstIsIn
+    bstInsert
+    exceptions **
+    example
+
+BST maps keys to values
+keys are totally ordered
+2 keys k1, k2
+    k1 < k2
+    k1 = k2
+    k1 > k2
+ 
+In the well balanced tree, you can find the key well.
+Type
+    'key bst =
+        BstEmpty |
+        BstNode of 'key * 'key bst * 'key bst;;
+                   key     left        right
+    int bst       bstIsIn: 'a -> 'a bst -> bool
+    string bst
+
+let bstIsIn key tree =
+    let rec isInning subTree =
+        Match subTree
+        with BstEmpty -> False |
+             BstNode(otherKey, leftSubtree, rightSubtree) ->
+             if key < otherKey
+                then isInning leftSubtree
+             else if key > otherKey
+                then isInning rightSubtree
+             else 
+                true
+    in isInning tree
+;;
+
+let bstInsert tree key =
+    let rec inserting subtree =
+        Match subtree
+        with BstEmpty ->
+            BstNode(key, BstEmpty, BstEmpty) |
+            BstNode(otherKey, leftSubtree, rightSubtree) ->
+                if key < otherKey
+                    then BstNode(otherKey, inserting leftSubtree, rightSubtree)
+                else if key > otherKey
+                    then BstNode(otherKey, leftSubtree, inserting rightSubtree)
+                else
+                    subtree
+    in inderting tree
+;;
+
+key = 50

@@ -1,0 +1,75 @@
+Announcements
+    Spring break
+    Bug in P1
+Streams
+    satisfies
+Mutable objects
+    variables
+    arrays
+Memoization != memorization
+
+let satisfies predicate stream =            pretend notation for streams
+    makeStream                              naturals[0 1 2 3 ...]
+        (predicate(first stream))           satisfies odd naturals =>
+        (rest stream)                           [false true false true ...]
+        (fun this state ->                  let s = satisfied odd naturals =>
+            ((predicate (first state)),         ((false, [1 2 3...]), <fun>)
+            (rest state)))
+;;
+
+first s => false
+first(rest s) => 
+    ((true, [2, 3...]), <fun>)
+
+first(rest(rest s)) =>
+     ((false, [3...]), <fun>)
+
+first(rest(rest(rest s))) =>
+    ((true, [4...]), <fun>)
+
+Stream with another stream inside
+satisfies - result of doing infinite size computation works in finite time
+only the finite part (that we ask for) actually exists.
+
+Mutable objects
+    mutable - changeable
+    variable
+        Not a name!
+        Little data strucuture
+        Has operations
+        Act ad a container for a value
+    
+        ref v => returns a variable whose initial value is value
+                ref 0, ref true, ref "Hello"
+                if v has type t then the variable had type t ref
+        When you see "ref" think "var" instead
+        Algo 68
+            variables are pointers
+            int x = 3   constant x is 3
+            ref int x = 3   variable x whose value is 3
+        
+        let x = ref 0;;
+        A variable and its value are two different things.
+        x a variable whose value is 0
+        !x the value of variable x, 0
+        ! : 'a ref -> a
+        change the value of variable
+            x := v
+            x has value 0 !x
+            x := 1
+            x has value 1 !x
+            Don't write !x := v
+            := : 'a ref -> 'a -> unit
+    Array
+        Arrays are mutable in Ocaml
+        [| e0; e1...; en-1 |]
+           0   1       n-1
+        Size of array can't change
+        Arrays are not strings
+        Array.Make length initial =>
+            Array of length objects whose initial values are initial.
+        Array.Make 3 0 => [| 0; 0; 0|]
+          t arrau           int array
+        a.(j) => element of a at index;
+        a.(j) <- v changed j's element
+        Array.length a

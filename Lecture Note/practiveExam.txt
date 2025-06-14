@@ -1,0 +1,217 @@
+let multiply x y = x * y
+let double = multiply 2
+let triple = multiply 3
+
+(* 테스트 *)
+double 5;; (* 예상 출력: 10 *)
+triple 4;; (* 예상 출력: 12 *)
+
+let rec sum_list lst = (* 구현하기 *)
+    match lst
+    with [] -> 0
+         head :: tail -> head + sum_list tail;;
+
+(* 테스트 *)
+sum_list [1; 2; 3; 4; 5];; (* 예상 출력: 15 *)
+sum_list []; (* 예상 출력: 0 *)
+
+
+let power base exp =
+    let rec helper base exp acc =
+        if exp = 0
+            return acc
+        else
+            helper base (exp - 1) (acc * base)
+    in helper base exp 1
+;;
+
+(* 테스트 *)
+power 2 3;; (* 예상 출력: 8 *)
+power 5 0;; (* 예상 출력: 1 *)
+
+let length lst =
+    let rec helper lst acc =
+        match lst
+        with [] -> acc |
+             head :: tail -> helper tail (acc + 1)
+    in helper lst 0
+;;
+
+(* 테스트 *)
+length [1; 2; 3; 4];; (* 예상 출력: 4 *)
+length [];; (* 예상 출력: 0 *)
+
+let rec sum_helper n acc =
+    if n = 0
+        then acc
+    else
+        sum_helper (n - 1)(acc + n);;
+
+let sum_to_n n = sum_helper n 0;;
+
+(* 테스트 *)
+sum_to_n 5;; (* 예상 출력: 15 *)
+sum_to_n 10;; (* 예상 출력: 55 *)
+
+*** Need to See ***
+let rec last_element lst =
+    match lst
+    with [] -> 0 |
+         head :: tail ->
+            if tail = []
+                then head
+            else
+                last_element tail
+;;
+
+(* 테스트 *)
+last_element [1; 2; 3; 4];; (* 예상 출력: 4 *)
+last_element ["a"; "b"; "c"];; (* 예상 출력: "c" *)
+
+type person = {
+    name : string;
+    age : int;
+}
+let new_person n, a = {name = n, age a};;
+let p = new_person "Jehoon" 22;;
+p.name;;
+p.age;;
+
+type intList =
+    Empty |
+    Node of int * intList
+;;
+let rec sumOfList lst =
+    match lst
+    with Empty -> 0 |
+         Node(first, second) ->
+            first + sumOfList second;;
+(* 테스트 *)
+let l = Node (1, Node (2, Node (3, Empty)));;
+sum_intList l;; (* 예상 출력: 6 *)
+
+let f = fun x y -> x * y + 3;;
+
+(* 테스트 *)
+f 2 3;; (* 예상 출력: 9 *)
+f 4 5;; (* 예상 출력: 23 *)
+
+let rec find_value key lst default =
+    match lst
+    with [] -> default |
+         (newKey, newValue) :: newPairs ->
+            if key = newKey
+                then newValue
+            else 
+                find_value key newPairs default;;
+
+let find_value key lst default =
+    let rec finding lst =
+        match lst
+        with [] -> default |
+             (newKey, newValue) :: newPairs ->
+                if key = newKey
+                    then newValue
+                else
+                    finding newPairs
+    in finding lst;;
+
+(* 테스트 *)
+let al = [("a", 1); ("b", 2); ("c", 3)];;
+find_value "b" al 0;; (* 예상 출력: 2 *)
+find_value "z" al (-1);; (* 예상 출력: -1 *)
+
+type proposition =
+    | False
+    | True
+    | Var of string
+    | Not of proposition
+    | And of proposition * proposition
+    | Or of proposition * proposition
+;;
+
+let rec evaluate prop pairs =
+    match prop
+    with False -> false |
+         True -> true |
+         Var name -> alGet (evaluate pairs)name |
+         Not right -> not(evaluate right) |
+         And (left, right) -> evaluate left && evaluate right |
+         Or (left, right) -> evaluate left || evaluate right
+;;
+exception E;;
+let alGet pairs key =
+    let rec getting pairs =
+        match pairs
+        with [] -> raise E |
+             (newKey, newValue) :: newPairs ->
+                if newKey = key
+                    then newValue
+                else
+                    getting newPairs
+    in getting pairs;;
+
+(* 테스트 *)
+evaluate (And (True, False));; (* 예상 출력: False *)
+evaluate (Or (True, False));; (* 예상 출력: True *)
+
+let for_loop etc first last =
+    let rec looping i =
+        if first <= last
+            then etc i;
+                 looping(i + 1)
+        else()
+    in looping first;;
+
+let makeStream this state rest =
+    ((this, state), rest);;
+let first this state rest =
+    ((first, _), _);;
+let rest ((this, state), rest) =
+    ((next this state), rest);;
+
+let factorials =
+    let rec helper this state =
+        (this * state, helper(this * state, state + 1))
+    in helper 1 1;;
+
+let isIn element stream count =
+    let rec finding stream count =
+        if count = 0
+            then false
+        else
+            in
+            if element = first stream
+                then true
+            else
+                finding (rest stream)(count - 1)
+    in finding stream count;;
+
+Memoization with association list
+let alGet pairs key =
+    let rec getting pairs =
+        match pairs
+        with [] -> None |
+             (newKey, newValue) :: newPairs ->
+                if newKey = key
+                    then newValue
+                else
+                    getting newPairs
+    in getting pairs
+;;
+let alPut pairs key value = (key, value) :: pairs;;
+let memyFib =
+    let table = ref[]
+    let rec fibbing n =
+        match alGet(!table)n
+        with None ->
+            (let f =
+                match n
+                with 0 -> 0 |
+                     1 -> 1 |
+                     _ -> fibbing(n -2) + fibbing(n - 1))
+        in table := alPut(!table)nf;
+        f |
+        Some f -> f
+    in fibbing;;
+

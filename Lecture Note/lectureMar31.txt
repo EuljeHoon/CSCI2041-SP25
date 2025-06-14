@@ -1,0 +1,17 @@
+Lisp
+    You never have to write Lisp code.
+    History
+    Homoiconincity
+    Data structures
+    Examples
+    How to represent this in Ocaml?
+
+List processor
+    Lists represent both programs and data.
+    Why?
+    Advice Taker(never done)
+    Everything is a function, Maybe lazily evaluated function calls are lists
+    
+    () empty
+    (e0 e1 ... en-1) non empty list e's are the elements
+    e's can be numbers, symbols, other lists

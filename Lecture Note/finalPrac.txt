@@ -1,0 +1,32 @@
+let rec isEven n =
+   if n = 0
+        then true
+    else
+        isOdd(n - 1)
+and isOdd n =
+    if n = 0
+        then false
+    else
+        isEven(n - 1)
+
+exception MyError of String
+
+let isEqual opt1, opt2 =
+    match(opt1, opt2)
+    with (Some a, Some b) ->
+            if a > b
+                then "First bigger"
+            else if a < b
+                then "Second bigger"
+            else
+                then "Equal" |
+         (None, _) ->
+            raise MyError("Invalid Input") |
+         (_, None) ->
+            raise MyError("Invalid Input")
+
+
+            
+        
+    
+        

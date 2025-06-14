@@ -1,0 +1,47 @@
+Revised version of Mondays lecture is on Canvas
+Lazy evaluation
+    How to write our own lazies?
+    promise
+    delay
+    demand
+    Lazy lists
+
+type 'a promise =
+    Done of 'a |
+    Waiting of (unit -> 'a);;
+
+let delay func =
+    ref (Waiting func);;
+
+func: (unit -> 'a) -> 'a promise ref
+
+let demand promise =
+    match !promise
+    with Done result ->
+            result |
+         Waiting func ->
+            let result = func()
+            in promise := Done result;
+               result;;
+demand: 'a promise ref -> 'a
+
+delay implements lazy
+demand implement force
+
+expression e
+when h evaluate e,
+h get e'
+
+let p = delay(fun() -> e)
+demand p => e'  O(T(e))
+demend p => e'  O(1)
+demend p => e'  O(1)
+
+let f left right =
+    if left = 0
+        then 0
+    else (left * left) + (demand right * demand right);;
+
+f left right = {0 if left = 0(does not evaluate right), left^2 + right^2 if left != 0}
+f x(delay(fun() -> y)) x != 0, x => x', y => y'
+left = x'

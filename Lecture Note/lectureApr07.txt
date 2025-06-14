@@ -1,0 +1,60 @@
+Announcement
+    scanner.ml
+    testScanner.ml
+    factorial.lsp
+Lisp 
+    scanner
+    syntox diagrams
+    examples
+
+Scanner - group chars from a program file into meaningful chunks called tokens.
+Module scanner : Scannerish =
+struct
+    type token =
+        CloseParenToken |
+        EndToken |
+        NumberToken of int |
+        OpenParenToken |
+        SymbolToken of String;;
+    
+let input = ref stain;;
+let ch = ref '';;
+let nextChar() =
+    try ch := input_char ! input
+    with
+        End_of_file ->
+            ch := '\000';;
+let initialize path =
+    input := open_in path;
+    nextChar();;
+
+token: Translate to a function, dispatch on first char
+
+let rec nextToken() =
+    match !ch
+    with '\000' ->
+            nextEndToken() |
+         ' ' | '\n' ->
+            nextChar();
+            nextToken() |
+         '(' ->
+            nextOpenParenToken() |
+         ')' ->
+            nextCloseParenToken() |
+         '_' | '0' | '1' | '2' | ... | '9' ->
+            nextNumberToken() | 
+         ';' ->
+            nextConmment();
+            nextToken() |
+          _ ->
+            nextSymbolToken()
+end;;
+
+let nextCloseParenToken() =
+    nextChar();
+    closeParenToken;;
+let nextOpenParenToken() =
+    nextChar();
+    OpenParenToken;;
+let nextEndToken() =
+    EndToken;;

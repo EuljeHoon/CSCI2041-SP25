@@ -1,0 +1,65 @@
+Memoization
+    Using an association
+    list
+    "Automatic" Memoization
+
+[(k1, v1); (k2, v2)...; (kn, vn)]
+type('key, 'value) al = ('key * 'value) list;;
+type 'value option = None | some of 'value;;
+alGet: ('key, 'value) al -> 'key -> 'value option;;
+
+let alGet pairs key =
+    let rec getting pairs =
+        match pairs
+        with [] -> None |
+             (otherKey, otherValue) :: otherPairs ->
+                if key = otherKey
+                    then some otherValue
+                else
+                    getting otherPairs
+    in getting pairs
+;;
+let alPut pairs key value = (key, value) :: pairs;;
+let memyFib =
+    let table = ref[]
+    in 
+    let rec fibbing n =
+        match alGet(!table)n
+        with None ->
+            let f =
+                (match n
+                 with 0 -> 0 |
+                      1 -> 1 |
+                      _ -> fibbing(n - 2) + fibbing(n - 1))
+            in table := alPut(!table) n f;
+                f |
+            Some f -> f
+    in fibbing              <- Not gonna return if I don't call it
+;;
+
+Automatic Memoization
+    Memoize fib => Memoized version of fib
+    let memyFib = memoize fib;;
+
+    let memoize etc =
+        let table = Array.make m (-1)
+        in let rec memoized n =
+            if table.(n) >= 0
+                then table.(n)
+            else
+                (table.(n) <- etc n memoized;
+                 table.(n))
+           in memoized
+    ;;
+    let memyFib =
+        memoize
+            (fun n recurse ->
+            match n
+            with 0 -> 0 |
+                 1 -> 1 |
+                 _ -> 
+                    rescue(n - 2) + recurse(n - 1))
+    ;;
+    memyFib 3 => 2
+
+    Automatically memoized 3 recursive fibonacci function - but only momoize knows how to do that.

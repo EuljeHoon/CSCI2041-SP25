@@ -1,0 +1,53 @@
+Association list
+    Not built in
+    Mopping from keys to value
+    al Get
+    al Put
+Pattern Matching
+    Match expression
+    length
+    al Get
+
+Association List
+    Lisp 1958
+    [(k1, v1); (k2, v2)...; (kn, vn)] - [(key, value)]
+    [("zero", 0); ("one", 1);...; ("nine", 9)]
+    
+    let alGet pairs key default =               ('a * 'b) list -> 'a ->   'b    -> 'b
+        let rec alGetting pairs =                   pairs         key   default    result
+            if pairs = []
+                then default
+            else let pair = hd pairs
+                in if key = fst pair
+                        then snd pair
+                    else alGetting(tl pairs)
+    in alGetting pairs
+    ;;
+
+    Tail Recursive (might be in exam)
+        As efficient as a loop.
+    Linear Search (O(n))
+        potentially slow.
+        n elements, on average we look at n/2 of them.
+        pairs is short <= 10 elements.
+        We don't care about the runtime.
+
+    let alPut key value pairs =                          <- (O(1)), type: 'a -> 'b -> ('a * 'b)list -> ('a * 'b)list
+        (key, value) :: pairs                                Does not change pairs.
+    ;;
+    alPut "ten" 10 [("zero", 0); ("one", 1)] => [("ten", 10); ("zero", 0); ("one", 1)]
+
+Pattern Matching
+    Match e with p1 -> e1 | p2 -> e2 ... | pn -> en
+    1. Evaluate e
+    2. Match it s value against P1, P2 ... Pn 
+    3. If some match with Pi succeeds then return ei 
+    4. If no match succeeds, then error.
+
+    let rec length l =
+        Match l 
+        with [] -> 0 |
+            _ :: t ->            <-list with head h + tail l
+                1 + length t ;;
+            
+    _(underline): Matches anything but does not save its value. "Wild Card"

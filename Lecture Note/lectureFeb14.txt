@@ -1,0 +1,50 @@
+higher-order functions
+    reduce
+    closures
+        bindings
+        environments
+        closure
+        why?
+
+reduce f [e0; e1 ...; en -1]; => 
+    f e0(f e1 ...(f en - 1 i)...)
+
+    reduce f []i => i
+let reduce func objects initial =
+    let rec reducing objects =
+        match objects
+        with [] -> initial |
+            first :: rest ->
+                func first (reducing rest)
+    in reducing objects
+;;
+func first (reducing rest)
+tail rec    ** This is not tail recursive **
+
+(+) the name of the addition function    a + b = (+) a b
+(*) this is not the name of the multiplication function *@#!?
+( * )
+reduce (+) [1; 2]0 =>
+    reducing [1; 2] => (+) 1 (reducing[2]) => (+) 1((+) 2 (reducing[])) => (+) 1 ((+) 2 0) => (+) 1 2 => 3
+
+The binding of a name is the name's value.
+An environmen is a set of all available bindings at each poiint in a program.
+let a = 1;;
+let f x = x + a;;
+let g h = 
+    let a = 2
+    in f 3 ;;
+g f;;
+Which a do they use? answer: The a in a first row.
+What value do we get back?
+which a soes g use?
+5 - Dynamic scoping, 
+3 - Lexical scoping, static scoping
+Functions are closed in their defining environments.
+Not their calling environment
+Closure is an internal data structure that represents a function.
+   Closure
+f ->    ->x parameters
+        -> x + a body
+        -> a = 1 defining environment
+            (+) = ...

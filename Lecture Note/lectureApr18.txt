@@ -1,0 +1,91 @@
+Lisp primitives
+    define 
+    lambda
+    relations
+    Most can be generated automatically
+Code for evaluator to canvas
+
+(define s e)
+(define id
+    (define id
+        x (x) x))
+(define ten 10)
+(define f
+    (x(x)
+        (define g...)
+        .
+        .
+        .))
+
+primitive "define"
+    (fun args env ->
+        match args
+        with Cons(left, Cons(right, Nil)) ->
+            (match left with 
+                symbol name ->
+                    global := envPut name(evaluating right env)(! global);
+                    left |
+                _ ->
+                    oops "Define expected & symbol & expression") |
+            _->
+                oops "Define expected &symbol & expression");;
+
+Lambda makes a function
+    (x(p1 p2 ... pn) e) n >= 0
+    (x () e)
+    p's are symbols distinct symbols (no publicates)
+    A function that tests the parameter list.(boring)
+
+primitive "lambda"
+    (fun args env ->
+        match args
+        with Cons(pars, Cons(body, Nil)) ->
+                if areParameter pars
+                then Closure (pars, body, env)
+                else oops "Lambda expected parameters and a body" |
+            _ ->
+                oops "Lambda expected parameters and a body");;
+areParameters
+    1. Is every element of pars a symbol?
+    2. Does every symbol appear exactly once?
+
+Relations on ints:
+    (= e1 e2)
+    (< e1 e2)
+    (<= e1 e2)
+    (> e1 e2)
+    (>= e1 e2)
+    (<> e1 e2)
+
+primitive "<"
+    (fun args env ->
+        match args
+        with Cons(left, Cons(right, Nil)) ->
+             (math(evaluating left env,
+                   evaluating right env) ->
+              with (Number left, Number right) ->
+                        if left < right
+                            then tee
+                        else Nil |
+                    _ ->
+                        oops "< expected two numbers") |
+             _->
+                oops "<expected two numbers");;
+
+let makeRelation op message =
+    (fun args env ->
+        match args
+        with Cons(left, Cons(right, Nil)) ->
+                (match (evaluating left env, evaluating right env)
+                    with (Number left, Number right) ->
+                            if op left right
+                                then tee
+                            else Nil |
+                         _ ->
+                            oops message));;
+
+primitive "<" (makeRelation (<) "< expected two numbers");;
+primitive ">" (makeRelation (>) "> expected two numbers");;
+<=
+>=
+<>

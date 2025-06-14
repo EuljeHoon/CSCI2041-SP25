@@ -1,0 +1,58 @@
+1/29/2025
+Lists in Ocaml
+append
+    3 versions
+    when to use helper?
+    what kind?
+tail Recursion
+    factorial
+
+Ocaml already has append - @
+Does not change the list
+
+2 lists, a & b
+a @ [] => a
+[] @ b => b
+[a0; a1;...] @ [b0; b1;...] => [a0; a1;...; b0; b1;...]
+["hello"; "to"] @ ["you"; "all"] => ["hello"; "to"; "you"; "all"]
+type of @ is 'a list -> 'a list -> 'a list
+one way to write a function - start with some identities and traslate the code.
+
+let rec append a b =
+    if a = []
+        then b
+    else if b = []
+        then a
+        else
+            (hd a) :: (append(tl a) b) 
+;;
+append [1; 2] [3; 4] => 1 :: (apped [2][3; 4]) => 1 :: (2 :: (append[][3; 4])) => 1 :: (2 :: [3; 4]) => 1 :: [2; 3; 4] => [1; 2; 3; 4]
+
+what is worng with the function above?
+We make this test many time : "else if b = []"
+
+(Helper function)
+let rec appending a b =
+    if a = []
+        then b
+    else
+        (hd a) :: (appending(tl a) b)     <- but this is a external function.
+;;
+let append a b =
+    if b = []
+        then a
+    else appending a b
+;;
+
+let append a b =
+    let rec appending a =
+        if a = []
+            then b
+        else
+            (hd a) :: (appending(tl a))
+    in
+    if b = []
+        then a
+    else
+        appending a
+;;

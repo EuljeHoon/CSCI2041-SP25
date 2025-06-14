@@ -1,0 +1,76 @@
+Primitives Control Structures
+    not, if, and, or, define, lambda
+
+(not e) => {t if e = nil, nil if e != nil}
+primitive "not"
+    (fun args env ->
+        match args
+        with Cons(arg, Nil) ->
+                if (evaluating arg env) = Nil
+                    then tee
+                else
+                    Nil |
+             _ ->
+                Oops "Not expected one argument");;
+
+(if e1 e2 e3) => {e3 if e1 = nil, e2 if e1 != nil}
+Evaluate lazily
+Evaluate either e2 or e3 but not both
+primitive "if"
+    (fun args env ->
+        match args
+        with Cons(test, Cons(whenTrue, Cons(whenFalse, Nil))) ->
+                if evaluating test env = Nil
+                    then evaluating whenFalse env
+                else evaliating whenTrue env
+             _ ->
+                Oops "if expected three arguments");;
+
+(and e1 e2 ... en) where n >= 0
+Evaluate arguments one at a time, left to right,
+If one of the arguments is Nil(false) then stop, return Nil
+If we get to the last argument en then return its value.
+What's (and)? Return t.
+primitive "and"
+    (fun args env ->
+        let rec anding args =
+            match args
+            with Nil ->
+                    tee |
+                 Cons(arg, Nil) ->
+                    evaluating arg env |
+                 Cons(arg, args) ->
+                    if evaluating arg env = Nil
+                        then Nil
+                    else anding args
+                 _-> 
+                    Oops "AND expected zero or ..."
+        in anding args);;
+What's (and e)? Return e's value
+(and e1 e2 e3 e4) => (if e1(if e2(if e3 e4 nil)nil)nil)
+
+De Morgan's law
+    ㄱ(a ^ b) <-> ㄱa V ㄱb
+    ㄱ(a V b) <-> ㄱa ^ ㄱb
+    and & or will look wvry similar reverse the role of true & false
+(or e1 e2 ... en)
+Evaluate e's left tp right one at a time.
+If one of the e's in the (!= nil) then return value of that e.
+If we get to the last argument, then return its value.
+What's (or)?
+primitive "or"
+    (fun args env ->
+        let rec oring args =
+            match args
+            with Nil ->
+                    Nil |
+                 Cons(arg, Nil) ->
+                    evaluating args env |
+                 Cons(arg, args) ->
+                    let value = evaluating arg env
+                    in if value = Nil
+                            then oring args
+                        else value
+                 _->
+                    Oops "OR expected zero or more arguments"
+        in oring args);;

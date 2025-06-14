@@ -1,0 +1,65 @@
+Lisp
+    Examples
+        isMember(2)
+        delete
+        true/false
+        constants
+Internal representations
+    types
+        thing
+        environment
+
+Lisp is a family of related lang Not compatable C family
+    C, C++, Java, C#(Microsoft)
+
+How to write a constant list?
+Homoiconicity - same representaiton for code & data
+
+(a, b, c, d) {The list whose element are a, b, c, d? function call a(b, c, d)?}
+(quote p) => returns p without evaluating it.
+
+'(a b c d)
+(quote(a b c d))
+(a b c d) =
+call function a on argument b, c, d
+(quote p) = 'p
+
+(isMember (quote b) (quote(a b c d))) => t  t is a symbol that stands for itself (define t(quote t)) t means true, Null is another name for "empty"
+(isMember (quote b) nil) => nil
+(isMember (quote x) (quote(a b c d))) => nil
+(define isMemebr
+    (ㅅ (element elements)
+        if
+            (isNull elements); base1
+            nil
+            (if
+                (= element(car elements)); base2
+                t
+                (isMember element(car elements))))); recursive
+
+(and e1 e2 ... en)
+Evaluates the e's left to right.
+If some ei is nil, return nil. Otherwise return value if en.
+
+(or e1 e2 ... en)
+Evaluates e's left to right.
+If some e1 is not nil then retuen e1's value. Otherwise return value of en.
+
+(define isMember
+    ㅅ(element elements)
+        (and elements
+            (or
+                (= element(car elements))
+                (isMember element(car elements)))))
+
+In an applicate language, a function is represented as a closure.
+type
+    thing =
+        Closure of thing * thing * environment               first thing is parameter, second is body
+        Cons of thing * thing |
+        Nil |
+        Number of int |
+        Primitive of(thing -> environment -> thing)          first thing is parameter, second is result
+        Symbol of String;;
+and
+    environment = (string * thing)list;;

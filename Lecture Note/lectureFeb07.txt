@@ -1,0 +1,63 @@
+Pattern Matching
+    Examples
+        alGet
+        Patteen Matching is everywhere
+            fst, snd yes
+            hd, tail no
+    Types
+        General way to do that
+        Examples
+            List
+            BST
+
+let alGet pairs key default = 
+    let rec alGetting pairs =
+        match pairs
+        with [] -> default |
+            (otherKey, otherValue) :: otherPairs ->    (* '::' used as a pattern does not make a list! *)
+                if key = otherKey                       Can't do pattern matching in if statement, have to be in match
+                    then otherValue
+                else
+                    alGetting otherPairs
+    in alGetting pairs
+;;
+alGet [("one", 1); ("two", 2)] "two" -1 =>
+alGetting [("one",     1);         ("two", 2)] => 
+           otherKey   otherValue    otherPairs
+alGetting[("two",      2)] =>
+          otherKey   otherValue   otherPairs[]
+2
+
+let left (a, b) = a;;
+let right (a, b) = b;;
+
+instead of
+
+let left (a, _) = a;;
+let right (_, b) = b;;
+pattern matches an ordered pain
+
+left: 'a * 'b -> 'a
+rigth: 'a * 'b -> 'b
+left(1, 2) => 1
+
+Do something like hd, tl?
+let first(a :: b) = a;;
+let rest(a :: b) = b;;   Both do not work. All matches must be complete.
+
+Algebraic Types
+    I want a list of int's.
+    Top level:
+
+        type intyList =
+            Empty |
+            Node of int * intyList    (* Recursive definition *)
+        ;;
+        (Node(1, Node(3, Node(0, Empty))))  * Will get ptr for first List *
+        
+        let rec intyLength l =
+            match left
+            with Empty -> 0 |
+                Node(_, r) ->
+                    1 + intyLength r
+        ;;

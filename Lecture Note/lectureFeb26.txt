@@ -1,0 +1,63 @@
+Streams
+    naturals
+    factorials
+    take
+    isIn
+    satisfies
+    
+let naturals =
+    makeStream 0 () (fun this state -> (this + 1, ()));;
+((0, ()), <fun>)
+this state next
+let first ((this, _), _) = this;;
+let rest ((this, state), next) = (next this state, next);;
+let makeStream this state next =
+    ((this, state), next);;
+
+first naturals => 0
+first(rest naturals) => 1
+first(rest(rest naturals)) => 2
+            ((1, (1), <fun>))
+        ((2, ()), <fun>)
+
+let factorials =
+    makeStream
+        1 this
+        1 state
+next(fun this state ->
+        (this * state, next this
+            state + 1));;
+first factorials => 1
+fisrt (rest factorials) => 1
+        ((1, 2), <fun>)
+first (rest(rest factorials)) => 2
+        ((2, 3), <fun>)
+first (rest(rest(rest factorials))) => 6
+        ((6, 4), <fun>)
+first (rest(rest(rest(rest factorials)))) => 24
+
+let isIn element stream count =   <- does element appear in the first count elements of stream? count >= 0
+    let rec inning stream count =
+        if count = 0
+            then false
+        else
+            if element = first element
+                then true
+            else
+                inning (rest stream) (count - 1)
+    in inning stream count;;
+
+let rec take count stream =
+    match count
+    with 0 -> [] |
+         _ -> 
+            (first stream)::
+            (take(count - 1)(rest stream));;
+
+satisfies odd naturals => a stream of true's and falses
+let satisfies predicate stream =
+    makeStream
+        (predicate(first stream)) this
+        (rest stream) state
+        (fun this state ->
+            ((predicate(first state)), (rest state)));;

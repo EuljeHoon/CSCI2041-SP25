@@ -1,0 +1,56 @@
+Tautology checker
+    tautology.ml
+Streams
+    Infinite series of objects
+    makeStream
+    first
+    rest
+    naturals
+    Factorials
+
+let generateBools etc n =
+    let rec generating bools n =
+        match n
+        with 0 -> etc bools |
+             _ -> generating(false :: bools)(n - 1)
+                  generatin(true :: bools)(n - 1)
+    in generating[] n
+;;
+
+let alPut pairs key value =
+    (key, value) :: pairs
+;;
+
+let gererateAndTestPairs etc names =
+    let rec generating names pairs =
+        match names
+        with [] -> etc pairs |
+             name :: otherNames ->
+                 generating otherNames(alPut pairs name false) &&
+                 generating otherNames(alPut pairs name true)
+    in generating names[]
+;;
+
+let isTautology proposition =
+    generateAndTestPairs
+        (fun pairs ->
+            evaluate proposition pairs)
+        (names proposition)
+;;
+
+Stream = 2 defs
+    Ordered (not necessarily finite) sequence of objects. Only a finite portion exists at a time.
+    function attached to the stream that generates ports of the stream as needed.
+    
+    let makeStream this state next =
+        ((this, state), next);;
+    this: first element
+    state: whatever info we need to make remaining elements
+    next: function is called on this and state to make the rest of the stream
+
+    let first ((this,_), _) =
+        this;;
+    let rest ((this, state), next) =
+        ((next this state), next);;
+    let naturals =
+        makeStream 0 ()(fun this state -> (this + 1()));;

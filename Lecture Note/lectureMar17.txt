@@ -1,0 +1,65 @@
+Evaluation strategies
+    lazy vs eager evaluation
+    Interpreter
+    How lazy evaluation works in Ocaml
+
+How do we evaluate programs
+evaluate = execute
+2 ways:
+1. Eager evaluation (Ocamnl, C, Java, Python)
+    Always evaluate as much of a program as possible
+2. Lazy evaluation (Hoskell)
+    Evaluate only the parts of a program that are nedded
+Decision made by implementers of a language.
+
+let f a b =
+    if a = 0
+        then 0
+    else
+        a + b;;
+f 1 2;; -> 3 ...?
+f 0 2;; -> 0 -I didn't need b.
+f 0 (0/0) -> error -I evaluated bothe a b before calling f(eager).
+Ocaml actually does this
+
+Lazy evaluator
+    f 1 2 -> evaluate a, evaluate b, 3
+    f 0 2 -> evaluate a, 0
+    f 0(0 / 0) -> evaluate a, 0
+Eager & Lazy are not equivalent
+
+f 0 bigComplecatedSlowExpression
+    lazy never evaluate this!
+
+let rec hang () =
+    hang();
+    5;;
+
+f 0 (hang());; -> In eager, it runs forever
+f 0 (hang());; -> evaluate a, 0
+
+Differences:
+    1.if x => e under eager
+    then x => e under lazy
+    2. if x => error under eager
+    then x => something else under lazy
+    3. if x hangs under eager
+    then x may not hang under lazy
+
+open Lazy;;
+want to evaluate e  lazily
+lazy e => get a data structure that holds the unevaluated e
+(lazy is built into ocaml)
+
+let z = lazy e <- not evaluated
+in force z  <- evaluates e. Remembers value of e so it need not evaluate it again
+
+let f a b =
+    if a = 0
+        then a 
+    else 
+        a + (force b);;
+f 1 (lazy 2) => 3  evaluated b
+f 0 2 => 0 not evaluated b
+f 0 (lazy(0/0)) => 0 not evaluated b
+f 0 (lazy(hang())) => 0 not evaluated b

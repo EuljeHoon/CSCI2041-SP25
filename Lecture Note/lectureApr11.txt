@@ -1,0 +1,76 @@
+Announcement
+    Next lab - will ask to translate simple Lisp to Ocaml
+Lisp
+    1 example
+Evaluator
+    module with o type
+    environments
+
+(delete (quote b)(quote(a b c))) => (quote(a c))
+(delete (quote x)(quote(a b c))) => (quote(a b c))
+(delete(quote x) nil) => nil
+(define delete
+    (ㅅ(element elements)
+        (if
+            (isNull elements) ;base 1
+            nil 
+            (if
+                (=element(car elements)) ;base 2
+                (cdr elements)
+                (cons                     ;recursive case
+                    (car elements)
+                    (delete elements(cdr elements)))))))
+
+Recursive traversal
+    Environment - association list
+    envXxx
+    exactly 1 global environment (big)
+    Many local enviroment (small)
+
+module type Evaluatish
+sig
+    val evaluate : thing -> thing;;
+    exception EvaluatorError of string;;
+end;;
+module Evaluator : Evaluatish =
+Struct
+.
+.
+.
+end;;
+Evaluator.evaluate x => x'
+Struct
+.
+.
+.
+end;;   in here
+        exeptoion Evaluator of string;;
+        let oops message =
+            raise (EvaluatorError message);;
+        let envGet env name etc =
+            let rec envGetting enc =
+                match env 
+                with [] ->
+                        etc() |
+                     (otherName, otherValue) :: otherEnv ->
+                        if name = otherName
+                            then otherValue
+                        else 
+                            envGetting otherEnv
+            in envGetting env;;
+        let envMake() =
+            [];;
+        let envPut name value env =
+            (name, value) :: env;;
+            let tee = Symbol "t";;
+            let global = ref(envMake());;
+            global := envPut "nil" Nil(!global);;
+            global := envPut "t" tee(!global);;
+        let lookup env name =
+            envGet env name
+                (fun () ->
+                    envGet (!global) name
+                        (fun() ->
+                            oops("unbound name " ^ name)));;
+                            
+

@@ -1,0 +1,51 @@
+module Evaluator:Evaluatish =
+    Struct
+    .
+    .
+    .
+    end;;
+
+type
+    thing =
+        Closure of thing * thing * environment |
+        Cons of thing * thing |
+        Nil |
+        Number of int |
+        Prmitive of (thing -> environment -> thing) |
+        Symbol of string
+    and
+        environment = (string * string)list;;
+
+let evaluate thing =
+    evaluating thing (envMake());;
+let rec evaluating thing env =
+    match thing
+    with Cons(func, args) ->
+            (match (evaluating func env)
+             with Closure (pars, body, bodyEnv) ->
+                apply pars args env body bodyEnv |
+            Primitive howTo ->
+                howTo args env |
+            _ ->
+                Oops "Closure or Primitive expected") |
+        Symbol name ->
+            lookup env name |
+        _ ->
+            thing
+    and apply pars args argsEnv body bodyEnv =
+        Later!
+        ;;
+
+let primitive name howTo =
+    global := envPut name (Primitive howTo)(!global);;
+primitive "car" (fun args env -> ...)
+global -> [("car", )("t", Symbol, "t");("nil", Nil)]
+primitive "car"
+    (fun args env ->
+        match args
+        with Cons(arg, Nil) ->
+                (match (evaluating args env)
+                 with Cons(first, ) ->
+                        first |
+                      _ ->
+                        Oops "CAR expected a none empty list"))

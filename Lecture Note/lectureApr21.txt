@@ -1,0 +1,83 @@
+(quote x) => x witout evaluating it
+    primitive "quote"
+        (fun args _ ->
+            match args
+            with Cons(arg, Nil) ->
+                    arg |
+                 _ ->
+                    oops "Quote expected exactly one argument");;
+
+(list e1, e2 ... en) => (e^1, e^2 ... e^n)
+(list e1 e2 ... en) => (cons e1(cons e2 ... (cons en nil) ...))
+[e1; e2 ...; en] => e1 :: (e2 :: ...(en :: [])...)
+(list) => nil
+(list 2) = (e^)
+
+primitive "list"
+    (fun args env ->
+        let rec listing args =
+            match args
+            with Nil ->
+                    Nil |
+                 Cons(arg, args) ->
+                    Cons(evaluating arg env, listing args) |
+                 _ ->
+                    oops "List expected zero or more arguments"
+        in listing args);;
+
+Real Lisp -
+    Most primitives excute in O(1). A few machine instructions.
+    eq "eek"
+
+primitive "="
+    (fun args env ->
+        match args
+        with Cons(left, Cons(right, Nil)) -
+                (match (evaluating left env, evaluating right env)
+                 with (Nil, Nil) ->
+                       tee |
+                      (Number left, Number right) ->
+                        if left = right
+                            then tee
+                        else Nil |
+                      (Symbol left, Symbol right) ->
+                        if left = right
+                            then tee
+                        else Nil |
+                      _->
+                        Nil) oops "= expected exactly two arguments");;
+
+(- e) => -e^
+(-e1 e2) => e^1 - e^2
+Assuming the e's return numbers.
+
+primitive "-"
+    (fun args env ->
+        match args
+        with Cons (right, Nil) ->
+                (match (evaluating right env)
+                 with Number right ->
+                        Number(- right) |
+                      _ ->
+                        oops "- expected a number") |
+             Cons(left, Cons(right, Nil)) ->
+                (match(evaluating left env, evaluating right env)
+                 with (Number left, Number right) ->
+                        Number(left-right) |
+                       _ ->
+                        oops "-expected two number")
+             _ ->
+                oops "- expected one or two numbers");;
+
+(define f
+    (x(p1 p2 ... pn) parameters
+        e))
+(f a1 a2...an) arguments
+In a call, number of parameters = number of arguments
+We can match each ai with its corresponding Pi
+We bind (Assign a value) to each Pi, that's the result of evaluating ai.
+result of evaluating ai. -> evaluating the a's in the calling environment.
+After the assignments, we add the environment in the p's are bound to f's defining environment, evaluate e.
+
+p's calling environment
+f's defining environment
